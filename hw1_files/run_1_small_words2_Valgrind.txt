@@ -1,0 +1,60 @@
+run:
+valgrind --leak-check=full ./a.out 1 small.txt words2.txt
+
+Output:
+
+==184== Memcheck, a memory error detector
+==184== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==184== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==184== Command: ./a.out 1 small.txt words2.txt
+==184==
+mode: 1  |  paragraph: small.txt  |  words: words2.txt
+
+-- Original data --
+  i  |   pointers[i]    | word
+-----|------------------|------------------
+   0 |        0x4a486a0 | This
+   1 |        0x4a486a5 | is
+   2 |        0x4a486a9 | a
+   3 |        0x4a486ab | small
+   4 |        0x4a486b1 | example
+   5 |        0x4a486ba | It
+   6 |        0x4a486bd | has
+   7 |        0x4a486c1 | TWO
+   8 |        0x4a486c5 | sentences
+
+-- Clean and sorted data --
+  i  |   pointers[i]    | word
+-----|------------------|------------------
+   0 |        0x4a486a9 | a
+   1 |        0x4a486b1 | example
+   2 |        0x4a486bd | has
+   3 |        0x4a486a5 | is
+   4 |        0x4a486ba | it
+   5 |        0x4a486c5 | sentences
+   6 |        0x4a486ab | small
+   7 |        0x4a486a0 | this
+   8 |        0x4a486c1 | two
+
+-- Binary search --
+metal
+4, 6, 5, (3 iterations) not found
+be
+4, 1, 0, (3 iterations) not found
+it
+4, (1 iterations) found
+sun
+4, 6, 7, (3 iterations) not found
+is
+4, 1, 2, 3, (4 iterations) found
+that
+4, 6, 7, (3 iterations) not found
+==184==
+==184== HEAP SUMMARY:
+==184==     in use at exit: 0 bytes in 0 blocks
+==184==   total heap usage: 7 allocs, 7 frees, 20,237 bytes allocated
+==184==
+==184== All heap blocks were freed -- no leaks are possible
+==184==
+==184== For lists of detected and suppressed errors, rerun with: -s
+==184== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

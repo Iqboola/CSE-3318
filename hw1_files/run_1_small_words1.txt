@@ -1,0 +1,45 @@
+mode: 1  |  paragraph: small.txt  |  words: words1.txt
+
+-- Original data --
+  i  |   pointers[i]    | word
+-----|------------------|------------------
+   0 |        0x4a486a0 | This
+   1 |        0x4a486a5 | is
+   2 |        0x4a486a9 | a
+   3 |        0x4a486ab | small
+   4 |        0x4a486b1 | example
+   5 |        0x4a486ba | It
+   6 |        0x4a486bd | has
+   7 |        0x4a486c1 | TWO
+   8 |        0x4a486c5 | sentences
+
+-- Clean and sorted data --
+  i  |   pointers[i]    | word
+-----|------------------|------------------
+   0 |        0x4a486a9 | a
+   1 |        0x4a486b1 | example
+   2 |        0x4a486bd | has
+   3 |        0x4a486a5 | is
+   4 |        0x4a486ba | it
+   5 |        0x4a486c5 | sentences
+   6 |        0x4a486ab | small
+   7 |        0x4a486a0 | this
+   8 |        0x4a486c1 | two
+
+-- Binary search --
+that
+4, 6, 7, (3 iterations) not found
+it
+4, (1 iterations) found
+is
+4, 1, 2, 3, (4 iterations) found
+small
+4, 6, (2 iterations) found
+aunt
+4, 1, 0, (3 iterations) not found
+small
+4, 6, (2 iterations) found
+two
+4, 6, 7, 8, (4 iterations) found
+brother
+4, 1, 0, (3 iterations) not found

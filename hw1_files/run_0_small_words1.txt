@@ -1,0 +1,41 @@
+mode: 0  |  paragraph: small.txt  |  words: words1.txt
+
+-- Original data --
+0 This
+1 is
+2 a
+3 small
+4 example
+5 It
+6 has
+7 TWO
+8 sentences
+
+-- Clean and sorted data --
+0 a
+1 example
+2 has
+3 is
+4 it
+5 sentences
+6 small
+7 this
+8 two
+
+-- Binary search --
+that
+4, 6, 7, (3 iterations) not found
+it
+4, (1 iterations) found
+is
+4, 1, 2, 3, (4 iterations) found
+small
+4, 6, (2 iterations) found
+aunt
+4, 1, 0, (3 iterations) not found
+small
+4, 6, (2 iterations) found
+two
+4, 6, 7, 8, (4 iterations) found
+brother
+4, 1, 0, (3 iterations) not found
