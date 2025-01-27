@@ -4,7 +4,6 @@
 
 int main(int argc, char** argv) 
 {
-
     char *fname_par = NULL;
     char *fname_words = NULL;
 
