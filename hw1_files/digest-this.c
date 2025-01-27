@@ -15,10 +15,10 @@ int main(int argc, char *argv[])
 
     // 2. Open the file passed as argument
     FILE *fp = fopen(argv[1], "r");
-    if (!fp)
+    if (fp == NULL)
     {
-        fprintf(stderr, "Error: Could not open file %s\n", argv[1]);
-        return 1; 
+        printf("Error: File did not open. Exiting...\n");
+        exit(0); 
     }
 
     // 3. Read lines into a dynamically‐allocated array of char*
