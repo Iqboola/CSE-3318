@@ -86,9 +86,6 @@ int main(int argc, char *argv[])
     
     for (int i = 0; i < length; i++) 
     {
-        // %4d => right‐align integer in at least 4 spaces
-        // %20p => right‐align pointer in at least 20 spaces
-        // %-10s => left‐align string in a 10‐character field
         printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
     }
 
