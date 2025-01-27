@@ -2,21 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void insertionSort(char *words[], int length) 
-{
-    for (int i = 1; i < length; i++) 
-    {
-        char *key = words[i];
-        int j = i - 1;
-
-        while (j >= 0 && strcmp(words[j], key) > 0) 
-        {
-            words[j + 1] = words[j];
-            j--;
-        }
-        words[j + 1] = key;
-    }
-}
+void insertionSort(char *words[], int length);
 
 int main(int argc, char *argv[])
 {
@@ -114,4 +100,20 @@ int main(int argc, char *argv[])
     free(words);
 
     return 0;
+}
+
+void insertionSort(char *words[], int length) 
+{
+    for (int i = 1; i < length; i++) 
+    {
+        char *key = words[i];
+        int j = i - 1;
+
+        while (j >= 0 && strcmp(words[j], key) > 0) 
+        {
+            words[j + 1] = words[j];
+            j--;
+        }
+        words[j + 1] = key;
+    }
 }
