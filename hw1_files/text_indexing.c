@@ -124,11 +124,17 @@ void insertionSort(char *words[], int length)
 
 void printData(int mode, int length, char *words[])
 {
+   
     // Prints the sorted words in normal or verbose mode. Exits program if mode is invalid
     if (mode == 0) 
     {
-        printf("\n-- Clean and sorted data --\n");
-    
+        printf("\n-- Original data --\n");
+        for (int i = 0; i < length; i++)
+        {
+            printf("%d  %s\n", i, words[i]);
+        }
+        
+        printf("\n-- Clean and sorted data --\n");    
         for (int i = 0; i < length; i++) 
         {
             printf("%d  %s\n", i, words[i]);
