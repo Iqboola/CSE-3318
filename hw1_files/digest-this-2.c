@@ -28,9 +28,9 @@ int main() {
 
     insertionSort(words, length);
 
-    // Print sorted array of strings
-    printf("  i  |      pointers[i]   | word\n");
-    printf("-----|--------------------|-----------------\n");
+    printf("-- Clean and sorted data --");
+    printf("\n  i  |   pointers[i]    | word\n");
+    printf("-----|------------------|------------------\n");
     
     for (int i = 0; i < length; i++) 
     {
