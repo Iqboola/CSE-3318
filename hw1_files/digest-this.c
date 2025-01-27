@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
     }
 
     // 2. Open the file passed as argument
-    FILE *fp = fopen(argv[1], "r");
+    FILE *fp = NULL;
+    fp = fopen(argv[1], "r");
     if (fp == NULL)
     {
         printf("Error: File did not open. Exiting...\n");
