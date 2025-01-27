@@ -90,7 +90,7 @@ int main(int argc, char** argv)
     }
     fclose(fp_words);
 
-    // Creates a copy of the original words array
+    // Creates a copy of the original words array to pass to printData
     char **originalWords = malloc(length * sizeof(*originalWords));
     for (int i = 0; i < length; i++) 
     {
