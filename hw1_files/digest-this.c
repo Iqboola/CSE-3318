@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     // 1. Check command-line arguments
     if (argc < 2)
     {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        printf("Invalid command line argument; pass in a text file. Exiting...");
         return 1;
     }
 
