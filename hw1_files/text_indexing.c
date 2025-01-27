@@ -124,7 +124,7 @@ void insertionSort(char *words[], int length)
 
 void printData(int mode, int length, char *words[])
 {
-    // Print the sorted words in normal or verbose mode
+    // Prints the sorted words in normal or verbose mode
     if (mode == 0) 
     {
         printf("\n-- Clean and sorted data --\n");
@@ -144,5 +144,10 @@ void printData(int mode, int length, char *words[])
         {
             printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
         }
+    }
+    else
+    {
+        printf("\nInvalid mode selected. Enter either 0 or 1\n");
+        exit(0);
     }
 }
