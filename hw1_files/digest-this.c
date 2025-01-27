@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     if (argc < 2)
     {
         printf("Invalid command line argument; pass in a text file. Exiting...");
-        return 1;
+        exit(0);
     }
 
     // 2. Open the file passed as argument
