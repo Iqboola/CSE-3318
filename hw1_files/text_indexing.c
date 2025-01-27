@@ -131,7 +131,7 @@ void printData(int mode, int length, char *words[])
     
         for (int i = 0; i < length; i++) 
         {
-            printf("%d  %-10s\n", i, words[i]);
+            printf("%d  %s\n", i, words[i]);
         }
     }
     else if (mode == 1)
