@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
         exit(0);
     }
 
-    //Opens file passed in argument
+    //Opens the file passed in argument
     FILE *fp = NULL;
     fp = fopen(argv[1], "r");
     if (fp == NULL)
@@ -105,14 +105,14 @@ void insertionSort(char *words[], int length)
 {
     for (int i = 1; i < length; i++) 
     {
-        char *key = words[i];
+        char *wordsPtr = words[i];
         int j = i - 1;
 
-        while (j >= 0 && strcmp(words[j], key) > 0) 
+        while (j >= 0 && strcmp(words[j], wordsPtr) > 0) 
         {
             words[j + 1] = words[j];
             j--;
         }
-        words[j + 1] = key;
+        words[j + 1] = wordsPtr;
     }
 }

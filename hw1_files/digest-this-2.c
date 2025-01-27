@@ -6,19 +6,19 @@ void insertionSort(char *words[], int length)
 {
     for (int i = 1; i < length; i++) 
     {
-        // key is the pointer to the current string
-        char *key = words[i];
+        // wordsPtr is the pointer to the current string
+        char *wordsPtr = words[i];
         int j = i - 1;
 
         // Use strcmp to compare strings instead of comparing the first character
-        while (j >= 0 && strcmp(words[j], key) > 0) 
+        while (j >= 0 && strcmp(words[j], wordsPtr) > 0) 
         {
             words[j + 1] = words[j];
             j--;
         }
 
-        // Insert key into correct position
-        words[j + 1] = key;
+        // Insert wordsPtr into correct position
+        words[j + 1] = wordsPtr;
     }
 }
 
