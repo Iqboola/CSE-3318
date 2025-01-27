@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     if (fp == NULL)
     {
         printf("Error: File did not open. Exiting...\n");
+        fclose(fp);
         exit(0); 
     }
 
