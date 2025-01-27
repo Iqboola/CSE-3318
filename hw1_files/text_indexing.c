@@ -3,6 +3,7 @@
 #include <string.h>
 
 void insertionSort(char *words[], int length);
+void printData(int mode, int length, char *words[]);
 
 int main(int argc, char** argv) 
 {
@@ -92,7 +93,7 @@ int main(int argc, char** argv)
     // Sort the array of words
     insertionSort(words, length);
 
-    // Print the sorted words in verbose mode
+    // Print the sorted words in normal or verbose mode
     if (mode == 0) 
     {
         printf("\n-- Clean and sorted data --\n");
@@ -139,3 +140,28 @@ void insertionSort(char *words[], int length)
         words[j + 1] = wordsPtr;
     }
 }
+
+/* void printData(int mode, int length, char *words[])
+{
+    // Print the sorted words in normal or verbose mode
+    if (mode == 0) 
+    {
+        printf("\n-- Clean and sorted data --\n");
+    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%d  %-10s\n", i, words[i]);
+        }
+    }
+    else if (mode == 1)
+    {
+        printf("-- Clean and sorted data --");
+        printf("\n  i  |   pointers[i]    | word\n");
+        printf("-----|------------------|------------------\n");
+    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
+        }
+    }
+} */
