@@ -28,11 +28,12 @@ int main(int argc, char *argv[])
     const int INITIAL_CAPACITY = 10;
     int capacity = INITIAL_CAPACITY;
     char **words = malloc(capacity * sizeof(*words));
-    if (!words)
+    
+    if (words == NULL)
     {
-        fprintf(stderr, "Error: Memory allocation failed.\n");
+        print("Error: Memory allocation failed.\n");
         fclose(fp);
-        return 1;
+        exit(0);
     }
 
     int length = 0;
