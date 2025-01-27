@@ -147,7 +147,7 @@ void printData(int mode, int length, char *words[])
     }
     else
     {
-        printf("\nInvalid mode selected. Enter either 0 or 1\n");
+        printf("\nInvalid mode selected. Enter either 0 or 1. Exiting...\n");
         exit(0);
     }
 }
