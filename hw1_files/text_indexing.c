@@ -136,7 +136,7 @@ void printData(int mode, int length, char *words[])
     }
     else if (mode == 1)
     {
-        printf("-- Clean and sorted data --");
+        printf("\n-- Clean and sorted data --");
         printf("\n  i  |   pointers[i]    | word\n");
         printf("-----|------------------|------------------\n");
     
