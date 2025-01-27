@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void insertionSort(char *words[], int length) ;
+void insertionSort(char *words[], int length);
 
 int main(int argc, char** argv) 
 {
