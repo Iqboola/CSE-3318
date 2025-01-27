@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+void insertionSort(char *words[], int length) ;
+
 int main(int argc, char** argv) 
 {
     char *fname_par = NULL;
@@ -23,5 +25,108 @@ int main(int argc, char** argv)
 
     printf("mode: %d  |  paragraph: %s  |  words: %s\n", mode, fname_par, fname_words);  // KEEP THIS LINE
 
+    //Opens the words text file
+    FILE *fp_words = fopen(fname_words, "r");
+    if (fp_words == NULL) 
+    {
+        printf("Error: Could not open file. Exiting...\n");
+        exit(0);
+    }
+
+    //Dynamically reads words into an array
+    const int INITIAL_CAPACITY = 10;
+    int capacity = INITIAL_CAPACITY;
+    char **words = malloc(capacity * sizeof(*words));
+    if (words == NULL) 
+    {
+        printf("Error: Memory allocation failed. Exiting...\n");
+        fclose(fp_words);
+        exit(0);
+    }
+
+    int length = 0;
+    char buffer[256];
+
+    while (fgets(buffer, sizeof(buffer), fp_words)) 
+    {
+        // Remove trailing newline
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        // Expand array if necessary
+        if (length == capacity) 
+        {
+            capacity *= 2;
+            char **temp = realloc(words, capacity * sizeof(*words));
+            if (!temp) 
+            {
+                fprintf(stderr, "Error: Realloc failed.\n");
+                for (int i = 0; i < length; i++)
+                {
+                    free(words[i]);
+                }
+                free(words);
+                fclose(fp_words);
+                return 1;
+            }
+            words = temp;
+        }
+
+        // Allocate space for the new word and copy it
+        words[length] = malloc(strlen(buffer) + 1);
+        if (!words[length]) 
+        {
+            fprintf(stderr, "Error: Memory allocation failed.\n");
+            for (int i = 0; i < length; i++)
+            {
+                free(words[i]);
+            }
+            free(words);
+            fclose(fp_words);
+            return 1;
+        }
+        strcpy(words[length], buffer);
+        length++;
+    }
+    fclose(fp_words);
+
+    // Sort the array of words
+    insertionSort(words, length);
+
+    // Print the sorted words in verbose mode
+    if (mode == 1) 
+    {
+        printf("-- Clean and sorted data --");
+        printf("\n  i  |   pointers[i]    | word\n");
+        printf("-----|------------------|------------------\n");
+    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
+        }
+    }
+
+    // Free dynamically allocated memory
+    for (int i = 0; i < length; i++) 
+    {
+        free(words[i]);
+    }
+    free(words);
+
     return 0;
+}
+
+void insertionSort(char *words[], int length) 
+{
+    for (int i = 1; i < length; i++) 
+    {
+        char *wordsPtr = words[i];
+        int j = i - 1;
+
+        while (j >= 0 && strcmp(words[j], wordsPtr) > 0) 
+        {
+            words[j + 1] = words[j];
+            j--;
+        }
+        words[j + 1] = wordsPtr;
+    }
 }
