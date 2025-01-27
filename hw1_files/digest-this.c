@@ -6,14 +6,14 @@ void insertionSort(char *words[], int length);
 
 int main(int argc, char *argv[])
 {
-    // 1. Check command-line arguments
+    //Checks command line argument
     if (argc < 2)
     {
         printf("Invalid command line argument; pass in a text file. Exiting...");
         exit(0);
     }
 
-    // 2. Open the file passed as argument
+    //Opens file passed in argument
     FILE *fp = NULL;
     fp = fopen(argv[1], "r");
     if (fp == NULL)
