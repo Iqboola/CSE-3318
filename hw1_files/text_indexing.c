@@ -93,7 +93,16 @@ int main(int argc, char** argv)
     insertionSort(words, length);
 
     // Print the sorted words in verbose mode
-    if (mode == 1) 
+    if (mode == 0) 
+    {
+        printf("\n-- Clean and sorted data --\n");
+    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%d  %-10s\n", i, words[i]);
+        }
+    }
+    else if (mode == 1)
     {
         printf("-- Clean and sorted data --");
         printf("\n  i  |   pointers[i]    | word\n");
