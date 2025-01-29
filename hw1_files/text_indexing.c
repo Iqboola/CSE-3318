@@ -89,29 +89,58 @@ int main(int argc, char** argv)
         length++;
     }
     fclose(fp_words);
-
-    // Creates a copy of the original words array to pass to printData
-    char **originalWords = malloc(length * sizeof(*originalWords));
-    for (int i = 0; i < length; i++) 
-    {
-        originalWords[i] = malloc(strlen(words[i]) + 1);
-        strcpy(originalWords[i], words[i]);
-    }
-
-    // Sort the array of words
-    insertionSort(words, length);
     
-    //Prints formatted data
-    printData(mode, length, originalWords, words);
+    //Prints formatted and unformatted data
+    if (mode == 0) 
+    {
+        printf("\n-- Original data --\n");
+        for (int i = 0; i < length; i++)
+        {
+            printf("%d  %s\n", i, words[i]);
+        }
+        
+        insertionSort(words, length);
+        
+        printf("\n-- Clean and sorted data --\n");    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%d  %s\n", i, words[i]);
+        }
+    }
+    else if (mode == 1)
+    {
+        printf("\n-- Original data --");
+        printf("\n  i  |   pointers[i]    | word\n");
+        printf("-----|------------------|------------------\n");
+    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
+        }
+        
+        insertionSort(words, length);
+        
+        printf("\n-- Clean and sorted data --");
+        printf("\n  i  |   pointers[i]    | word\n");
+        printf("-----|------------------|------------------\n");
+    
+        for (int i = 0; i < length; i++) 
+        {
+            printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
+        }
+    }
+    else
+    {
+        printf("\nInvalid mode selected. Enter either 0 or 1. Exiting...\n");
+        exit(0);
+    }
 
     // Free dynamically allocated memory
     for (int i = 0; i < length; i++) 
     {
         free(words[i]);
-        free(originalWords[i]);
     }
     free(words);
-    free(originalWords);
 
     return 0;
 }
@@ -129,49 +158,5 @@ void insertionSort(char *words[], int length)
             j--;
         }
         words[j + 1] = wordsPtr;
-    }
-}
-
-void printData(int mode, int length, char *originalWords[], char *sortedWords[])
-{
-    // Prints the original and sorted words in normal or verbose mode. Exits program if mode is invalid
-    if (mode == 0) 
-    {
-        printf("\n-- Original data --\n");
-        for (int i = 0; i < length; i++)
-        {
-            printf("%d  %s\n", i, originalWords[i]);
-        }
-        
-        printf("\n-- Clean and sorted data --\n");    
-        for (int i = 0; i < length; i++) 
-        {
-            printf("%d  %s\n", i, sortedWords[i]);
-        }
-    }
-    else if (mode == 1)
-    {
-        printf("\n-- Original data --");
-        printf("\n  i  |   pointers[i]    | word\n");
-        printf("-----|------------------|------------------\n");
-    
-        for (int i = 0; i < length; i++) 
-        {
-            printf("%4d | %16p | %-10s\n", i, (void *)originalWords[i], originalWords[i]);
-        }
-        
-        printf("\n-- Clean and sorted data --");
-        printf("\n  i  |   pointers[i]    | word\n");
-        printf("-----|------------------|------------------\n");
-    
-        for (int i = 0; i < length; i++) 
-        {
-            printf("%4d | %16p | %-10s\n", i, (void *)sortedWords[i], sortedWords[i]);
-        }
-    }
-    else
-    {
-        printf("\nInvalid mode selected. Enter either 0 or 1. Exiting...\n");
-        exit(0);
     }
 }
