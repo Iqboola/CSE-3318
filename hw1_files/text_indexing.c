@@ -165,7 +165,7 @@ void insertionSort(char *words[], int length)
     }
 }
 
-/* int binarySearch(char *words[], char *element, int leftIndex, int rightIndex, int *iterations)
+int binarySearch(char *words[], char *element, int leftIndex, int rightIndex, int *iterations)
 {
     if (leftIndex > rightIndex)
     {
@@ -188,4 +188,4 @@ void insertionSort(char *words[], int length)
     {
         return binarySearch(words, element, mid + 1, rightIndex, iterations);
     }
-} */
+}
