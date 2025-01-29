@@ -4,6 +4,7 @@
 
 void insertionSort(char *words[], int length);
 void printData(int mode, int length, char *originalWords[], char *sortedWords[]);
+int binarySearch(char *words[], char *element, int leftIndex, int rightIndex, int *iterations);
 
 int main(int argc, char** argv) 
 {
@@ -106,6 +107,9 @@ int main(int argc, char** argv)
         {
             printf("%d  %s\n", i, words[i]);
         }
+
+        printf("\n--Binary Search--\n");
+        
     }
     else if (mode == 1)
     {
@@ -161,7 +165,27 @@ void insertionSort(char *words[], int length)
     }
 }
 
-void binarySearch()
+/* int binarySearch(char *words[], char *element, int leftIndex, int rightIndex, int *iterations)
 {
+    if (leftIndex > rightIndex)
+    {
+        return -1;
+    }
     
-}
+    (*iterations)++;
+    int mid = leftIndex + (rightIndex - 1) / 2;
+    int comparison = strcmp(words[mid], element);
+    
+    if (comparison == 0)
+    {
+        return mid; // Found
+    }
+    else if (comparison > 0)
+    {
+        return binarySearch(words, element, leftIndex, mid - 1, iterations);
+    }
+    else
+    {
+        return binarySearch(words, element, mid + 1, rightIndex, iterations);
+    }
+} */
