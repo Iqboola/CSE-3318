@@ -24,7 +24,7 @@ int main(int argc, char** argv)
         mode = atoi(argv[1]);
     }
 
-    printf("mode: %d  |  paragraph: %s  |  words: %s\n", mode, fname_par, fname_words);  // KEEP THIS LINE
+    printf("\nmode: %d  |  paragraph: %s  |  words: %s\n", mode, fname_par, fname_words);  // KEEP THIS LINE
 
     //Opens the words text file
     FILE *fp_words = fopen(fname_words, "r");
