@@ -160,3 +160,8 @@ void insertionSort(char *words[], int length)
         words[j + 1] = wordsPtr;
     }
 }
+
+void binarySearch()
+{
+    
+}
