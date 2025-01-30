@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void insertionSort(char *words[], int length);
 void printData(int mode, int length, char *originalWords[], char *sortedWords[]);
-int binarySearch(char *words[], char *element, int leftIndex, int rightIndex, int *iterations);
+int binarySearch(char* words[], int length, char* word);
 
 int main(int argc, char** argv) 
 {
@@ -107,8 +108,6 @@ int main(int argc, char** argv)
         {
             printf("%d  %s\n", i, words[i]);
         }
-
-        printf("\n--Binary Search--\n");
         
     }
     else if (mode == 1)
@@ -139,6 +138,8 @@ int main(int argc, char** argv)
         exit(0);
     }
 
+    printf("\n--Binary Search--\n");
+    
     // Free dynamically allocated memory
     for (int i = 0; i < length; i++) 
     {
@@ -165,27 +166,30 @@ void insertionSort(char *words[], int length)
     }
 }
 
-int binarySearch(char *words[], char *element, int leftIndex, int rightIndex, int *iterations)
-{
-    if (leftIndex > rightIndex)
+int binarySearch(char* words[], int length, char* word) {
+    int left = 0, right = length - 1;
+    int count = 0;
+
+    while (left <= right) 
     {
-        return -1;
+        count++;
+        int mid = left + (right - left) / 2;
+        printf("%d, ", mid);  // Print mid index for debugging
+
+        int cmp = strcmp(word, words[mid]);
+        if (cmp == 0) 
+        {
+            printf("(%d iterations) ", count);
+            return mid;
+        } 
+        if (cmp < 0) 
+        {
+            right = mid - 1;
+        } else 
+        {
+            left = mid + 1;
+        }
     }
-    
-    (*iterations)++;
-    int mid = leftIndex + (rightIndex - 1) / 2;
-    int comparison = strcmp(words[mid], element);
-    
-    if (comparison == 0)
-    {
-        return mid; // Found
-    }
-    else if (comparison > 0)
-    {
-        return binarySearch(words, element, leftIndex, mid - 1, iterations);
-    }
-    else
-    {
-        return binarySearch(words, element, mid + 1, rightIndex, iterations);
-    }
+    printf("(%d iterations) ");
+    return -1;
 }
