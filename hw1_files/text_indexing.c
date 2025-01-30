@@ -35,6 +35,12 @@ int main(int argc, char** argv)
         exit(0);
     }
 
+    FILE *fp_par = fopen(fname_par, "r");
+    if (fp_par == NULL) {
+        printf("Error: Could not open paragraph file. Exiting...\n");
+        exit(0);
+    }
+
     //Dynamically reads words into an array
     const int INITIAL_CAPACITY = 10;
     int capacity = INITIAL_CAPACITY;
@@ -165,30 +171,33 @@ void insertionSort(char *words[], int length)
     }
 }
 
-int binarySearch(char* words[], int length, char* word) {
-    int left = 0, right = length - 1;
-    int count = 0;
+int binary_search(char* X[], int N, char* word) 
+{
+    int left = 0, right = N - 1;
+    int iterations = 0;
+    printf("%s\n", word);  // Print search term first
 
     while (left <= right) 
     {
-        count++;
+        iterations++;
         int mid = left + (right - left) / 2;
-        printf("%d, ", mid);  // Print mid index for debugging
+        printf("%d, ", mid);  // Midpoint indices
 
-        int cmp = strcmp(word, words[mid]);
+        int cmp = strcmp(word, X[mid]);
         if (cmp == 0) 
         {
-            printf("(%d iterations) ", count);
+            printf("(%d iterations) found\n", iterations);
             return mid;
         } 
-        if (cmp < 0) 
+        else if (cmp < 0) 
         {
             right = mid - 1;
-        } else 
+        } 
+        else 
         {
             left = mid + 1;
         }
     }
-    printf("(%d iterations) ");
+    printf("(%d iterations) not found\n", iterations);
     return -1;
 }
