@@ -6,190 +6,159 @@
 void insertionSort(char *words[], int length);
 int binarySearch(char* words[], int length, char* word);
 
-int main(int argc, char** argv) 
-{
+int main(int argc, char** argv) {
     char *fname_par = NULL;
     char *fname_words = NULL;
-    int mode = 0; // 0 - normal, 1 - verbose
+    int mode = 0;
 
-    if (argc < 4) 
-    {
-        printf("Not enough arguments. Need mode and 2 filenames, e.g.:   0 small.txt words1.txt\n");
+    // ---------- [CHANGED] Argument Handling ---------- 
+    if (argc < 4) {
+        printf("Usage: ./program mode paragraph.txt words.txt\n");
         return 0;
-    }
-    else 
-    {
+    } else {
         mode = atoi(argv[1]);
         fname_par = argv[2];
         fname_words = argv[3];
     }
 
-    printf("\nmode: %d  |  paragraph: %s  |  words: %s\n", mode, fname_par, fname_words);  // KEEP THIS LINE
+    printf("mode: %d  |  paragraph: %s  |  words: %s\n", mode, fname_par, fname_words);
 
-    // Open paragraph file
+    // ---------- [ADDED] Read Paragraph File ----------
     FILE *fp_par = fopen(fname_par, "r");
-    if (fp_par == NULL) 
-    {
-        printf("Error: Could not open paragraph file. Exiting...\n");
-        exit(0);
+    if (!fp_par) {
+        printf("Error: Could not open paragraph file.\n");
+        exit(1);
     }
 
-    // Read paragraph and tokenize words dynamically
-    char paragraph[10000];
-    char *word = NULL;
-    char **words = NULL;
-    int wordCount = 0;
-    int length = 0;
-    int i = 0;
-
-    while (fgets(paragraph, sizeof(paragraph), fp_par)) 
-    {
-        paragraph[strcspn(paragraph, "\n")] = '\0'; // Remove newline
-        length = strlen(paragraph);
-        
-        // Count words by spaces
-        for (int j = 0; j < length; j++) 
-        {
-            if (paragraph[j] == ' ') 
-                wordCount++;
-        }
-        wordCount++;
-
-        words = malloc(sizeof(char*) * wordCount);
-        if (words == NULL) 
-        {
-            printf("Error: Memory allocation failed. Exiting...\n");
-            fclose(fp_par);
-            exit(0);
-        }
-
-        word = strtok(paragraph, " ");
-        while (word != NULL) 
-        {
-            words[i] = strdup(word);  // Copy each word
-            i++;
-            word = strtok(NULL, " ");
-        }
-    }
+    char paragraph[1024];
+    fgets(paragraph, sizeof(paragraph), fp_par);
     fclose(fp_par);
 
-    // Sort the words
-    insertionSort(words, wordCount);
+    // Tokenize and clean paragraph words
+    int paraCapacity = 10;
+    int paraLength = 0;
+    char **paraWords = malloc(paraCapacity * sizeof(char*));
 
-    // Print sorted data
-    if (mode == 0) 
-    {
+    char *token = strtok(paragraph, " ");
+    while (token != NULL) {
+        // ---------- [ADDED] Clean Word Logic ----------
+        char cleaned[256];
+        int i = 0, j = 0;
+        while (token[i]) {
+            if (isalpha(token[i])) {
+                cleaned[j++] = tolower(token[i]); // Lowercase + remove non-letters
+            }
+            i++;
+        }
+        cleaned[j] = '\0';
+
+        // ---------- [CHANGED] Store Cleaned Words (Not Words File) ----------
+        if (paraLength == paraCapacity) {
+            paraCapacity *= 2;
+            paraWords = realloc(paraWords, paraCapacity * sizeof(char*));
+        }
+        paraWords[paraLength] = strdup(cleaned); // Copy cleaned word
+        paraLength++;
+
+        token = strtok(NULL, " ");
+    }
+
+    // ---------- [CHANGED] Sort Cleaned Paragraph Words ----------
+    insertionSort(paraWords, paraLength);
+
+    // ---------- [CHANGED] Print Original/Sorted Data (Mode 0/1) ----------
+    if (mode == 0) {
+        printf("\n-- Original data --\n");
+        for (int i = 0; i < paraLength; i++) {
+            printf("%d  %s\n", i, paraWords[i]);
+        }
         printf("\n-- Clean and sorted data --\n");
-        for (int i = 0; i < wordCount; i++) 
-        {
-            printf("%d  %s\n", i, words[i]);
+        for (int i = 0; i < paraLength; i++) {
+            printf("%d  %s\n", i, paraWords[i]);
+        }
+    } else if (mode == 1) {
+        printf("\n-- Original data --\n  i  |   pointers[i]    | word\n-----|------------------|------------------\n");
+        for (int i = 0; i < paraLength; i++) {
+            printf("%4d | %16p | %s\n", i, (void*)paraWords[i], paraWords[i]);
+        }
+        printf("\n-- Clean and sorted data --\n  i  |   pointers[i]    | word\n-----|------------------|------------------\n");
+        for (int i = 0; i < paraLength; i++) {
+            printf("%4d | %16p | %s\n", i, (void*)paraWords[i], paraWords[i]);
         }
     }
-    else if (mode == 1)
-    {
-        printf("\n-- Clean and sorted data --");
-        printf("\n  i  |   pointers[i]    | word\n");
-        printf("-----|------------------|------------------\n");
 
-        for (int i = 0; i < wordCount; i++) 
-        {
-            printf("%4d | %16p | %-10s\n", i, (void *)words[i], words[i]);
-        }
-    }
-    else
-    {
-        printf("\nInvalid mode selected. Enter either 0 or 1. Exiting...\n");
-        exit(0);
-    }
-
-    // Perform binary search
-    printf("\n-- Binary Search --\n");
-
+    // ---------- [ADDED] Binary Search Logic ----------
+    printf("\n-- Binary search --\n");
     FILE *fp_words = fopen(fname_words, "r");
-    if (fp_words == NULL) 
-    {
-        printf("\nError opening words file\n");
-        exit(0);
+    if (!fp_words) {
+        printf("Error: Could not open words file.\n");
+        exit(1);
     }
 
-    char buffer[256];
-    while (fgets(buffer, sizeof(buffer), fp_words)) 
-    {
-        buffer[strcspn(buffer, "\n")] = '\0';  // Remove newline
-        for (int i = 0; buffer[i]; i++) 
-        {
-            buffer[i] = tolower(buffer[i]);  // Convert to lowercase
+    char searchWord[256];
+    while (fgets(searchWord, sizeof(searchWord), fp_words)) {
+        // ---------- [ADDED] Clean Search Term ----------
+        searchWord[strcspn(searchWord, "\n")] = '\0'; 
+        char cleaned[256];
+        int i = 0, j = 0;
+        while (searchWord[i]) {
+            if (isalpha(searchWord[i])) {
+                cleaned[j++] = tolower(searchWord[i]);
+            }
+            i++;
         }
+        cleaned[j] = '\0';
 
-        printf("%s\n", buffer);
-
-        int check = binarySearch(words, wordCount, buffer);
-        if (check >= 0) 
-        {
-            printf("Found at index %d\n", check);
-        }
-        else 
-        {
-            printf("Not found\n");
+        printf("%s\n", cleaned);
+        int result = binarySearch(paraWords, paraLength, cleaned);
+        if (result == -1) {
+            printf("not found\n");
+        } else {
+            printf("found\n");
         }
     }
     fclose(fp_words);
 
-    // Free allocated memory
-    for (int i = 0; i < wordCount; i++) 
-    {
-        free(words[i]);
-    }
-    free(words);
+    // ---------- [ADDED] Free Memory ----------
+    for (int i = 0; i < paraLength; i++) free(paraWords[i]);
+    free(paraWords);
 
     return 0;
 }
 
-// Insertion sort function
-void insertionSort(char *words[], int length) 
-{
-    for (int i = 1; i < length; i++) 
-    {
-        char *curr = words[i];
-        int j = i - 1;
-
-        while (j >= 0 && strcmp(words[j], curr) > 0) 
-        {
-            words[j + 1] = words[j];
-            j--;
-        }
-        words[j + 1] = curr;
-    }
-}
-
-// Binary search function
-int binarySearch(char* words[], int length, char* word) 
-{
+// ---------- [CHANGED] Binary Search to Track Iterations ----------
+int binarySearch(char* words[], int length, char* word) {
     int left = 0, right = length - 1;
     int iterations = 0;
-    printf("%s\n", word);  // Print search term first
 
-    while (left <= right) 
-    {
+    while (left <= right) {
         iterations++;
         int mid = left + (right - left) / 2;
-        printf("%d, ", mid);  // Print midpoint
+        printf("%d, ", mid);
 
         int cmp = strcmp(word, words[mid]);
-        if (cmp == 0) 
-        {
-            printf("(%d iterations) found\n", iterations);
+        if (cmp == 0) {
+            printf("(%d iterations) ", iterations);
             return mid;
-        } 
-        else if (cmp < 0) 
-        {
+        } else if (cmp < 0) {
             right = mid - 1;
-        } 
-        else 
-        {
+        } else {
             left = mid + 1;
         }
     }
-    printf("(%d iterations) not found\n", iterations);
+    printf("(%d iterations) ", iterations);
     return -1;
+}
+
+// ---------- [UNCHANGED] Insertion Sort ----------
+void insertionSort(char *words[], int length) {
+    for (int i = 1; i < length; i++) {
+        char *current = words[i];
+        int j = i - 1;
+        while (j >= 0 && strcmp(words[j], current) > 0) {
+            words[j + 1] = words[j];
+            j--;
+        }
+        words[j + 1] = current;
+    }
 }
