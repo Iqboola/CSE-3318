@@ -6,16 +6,19 @@
 void insertionSort(char *words[], int length);
 int binarySearch(char* words[], int length, char* word);
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
     char *fname_par = NULL;
     char *fname_words = NULL;
     int mode = 0;
 
-    // ---------- [CHANGED] Argument Handling ---------- 
-    if (argc < 4) {
+    if (argc < 4) 
+    {
         printf("Usage: ./program mode paragraph.txt words.txt\n");
         return 0;
-    } else {
+    } 
+    else 
+    {
         mode = atoi(argv[1]);
         fname_par = argv[2];
         fname_words = argv[3];
@@ -23,9 +26,9 @@ int main(int argc, char** argv) {
 
     printf("mode: %d  |  paragraph: %s  |  words: %s\n", mode, fname_par, fname_words);
 
-    // ---------- [ADDED] Read Paragraph File ----------
     FILE *fp_par = fopen(fname_par, "r");
-    if (!fp_par) {
+    if (!fp_par) 
+    {
         printf("Error: Could not open paragraph file.\n");
         exit(1);
     }
@@ -34,26 +37,27 @@ int main(int argc, char** argv) {
     fgets(paragraph, sizeof(paragraph), fp_par);
     fclose(fp_par);
 
-    // Tokenize and clean paragraph words
     int paraCapacity = 10;
     int paraLength = 0;
     char **paraWords = malloc(paraCapacity * sizeof(char*));
 
     char *token = strtok(paragraph, " ");
-    while (token != NULL) {
-        // ---------- [ADDED] Clean Word Logic ----------
+    while (token != NULL) 
+    {
         char cleaned[256];
         int i = 0, j = 0;
-        while (token[i]) {
-            if (isalpha(token[i])) {
-                cleaned[j++] = tolower(token[i]); // Lowercase + remove non-letters
+        while (token[i]) 
+        {
+            if (isalpha(token[i])) 
+            {
+                cleaned[j++] = tolower(token[i]);
             }
             i++;
         }
         cleaned[j] = '\0';
 
-        // ---------- [CHANGED] Store Cleaned Words (Not Words File) ----------
-        if (paraLength == paraCapacity) {
+        if (paraLength == paraCapacity) 
+        {
             paraCapacity *= 2;
             paraWords = realloc(paraWords, paraCapacity * sizeof(char*));
         }
@@ -63,46 +67,52 @@ int main(int argc, char** argv) {
         token = strtok(NULL, " ");
     }
 
-    // ---------- [CHANGED] Sort Cleaned Paragraph Words ----------
     insertionSort(paraWords, paraLength);
 
-    // ---------- [CHANGED] Print Original/Sorted Data (Mode 0/1) ----------
-    if (mode == 0) {
+    if (mode == 0) 
+    {
         printf("\n-- Original data --\n");
-        for (int i = 0; i < paraLength; i++) {
+        for (int i = 0; i < paraLength; i++) 
+        {
             printf("%d  %s\n", i, paraWords[i]);
         }
         printf("\n-- Clean and sorted data --\n");
-        for (int i = 0; i < paraLength; i++) {
+        for (int i = 0; i < paraLength; i++) 
+        {
             printf("%d  %s\n", i, paraWords[i]);
         }
-    } else if (mode == 1) {
+    } 
+    else if (mode == 1) 
+    {
         printf("\n-- Original data --\n  i  |   pointers[i]    | word\n-----|------------------|------------------\n");
-        for (int i = 0; i < paraLength; i++) {
+        for (int i = 0; i < paraLength; i++) 
+        {
             printf("%4d | %16p | %s\n", i, (void*)paraWords[i], paraWords[i]);
         }
         printf("\n-- Clean and sorted data --\n  i  |   pointers[i]    | word\n-----|------------------|------------------\n");
-        for (int i = 0; i < paraLength; i++) {
+        for (int i = 0; i < paraLength; i++) 
+        {
             printf("%4d | %16p | %s\n", i, (void*)paraWords[i], paraWords[i]);
         }
     }
 
-    // ---------- [ADDED] Binary Search Logic ----------
     printf("\n-- Binary search --\n");
     FILE *fp_words = fopen(fname_words, "r");
-    if (!fp_words) {
+    if (!fp_words) 
+    {
         printf("Error: Could not open words file.\n");
         exit(1);
     }
 
     char searchWord[256];
-    while (fgets(searchWord, sizeof(searchWord), fp_words)) {
-        // ---------- [ADDED] Clean Search Term ----------
+    while (fgets(searchWord, sizeof(searchWord), fp_words)) 
+    {
         searchWord[strcspn(searchWord, "\n")] = '\0'; 
         char cleaned[256];
         int i = 0, j = 0;
         while (searchWord[i]) {
-            if (isalpha(searchWord[i])) {
+            if (isalpha(searchWord[i])) 
+            {
                 cleaned[j++] = tolower(searchWord[i]);
             }
             i++;
@@ -111,38 +121,43 @@ int main(int argc, char** argv) {
 
         printf("%s\n", cleaned);
         int result = binarySearch(paraWords, paraLength, cleaned);
-        if (result == -1) {
+        if (result == -1) 
+        {
             printf("not found\n");
-        } else {
+        } else 
+        {
             printf("found\n");
         }
     }
     fclose(fp_words);
 
-    // ---------- [ADDED] Free Memory ----------
     for (int i = 0; i < paraLength; i++) free(paraWords[i]);
     free(paraWords);
 
     return 0;
 }
 
-// ---------- [CHANGED] Binary Search to Track Iterations ----------
-int binarySearch(char* words[], int length, char* word) {
+int binarySearch(char* words[], int length, char* word) 
+{
     int left = 0, right = length - 1;
     int iterations = 0;
 
-    while (left <= right) {
+    while (left <= right) 
+    {
         iterations++;
         int mid = left + (right - left) / 2;
         printf("%d, ", mid);
 
         int cmp = strcmp(word, words[mid]);
-        if (cmp == 0) {
+        if (cmp == 0) 
+        {
             printf("(%d iterations) ", iterations);
             return mid;
-        } else if (cmp < 0) {
+        } else if (cmp < 0) 
+        {
             right = mid - 1;
-        } else {
+        } else 
+        {
             left = mid + 1;
         }
     }
@@ -150,12 +165,15 @@ int binarySearch(char* words[], int length, char* word) {
     return -1;
 }
 
-// ---------- [UNCHANGED] Insertion Sort ----------
-void insertionSort(char *words[], int length) {
-    for (int i = 1; i < length; i++) {
+
+void insertionSort(char *words[], int length) 
+{
+    for (int i = 1; i < length; i++) 
+    {
         char *current = words[i];
         int j = i - 1;
-        while (j >= 0 && strcmp(words[j], current) > 0) {
+        while (j >= 0 && strcmp(words[j], current) > 0) 
+        {
             words[j + 1] = words[j];
             j--;
         }
