@@ -4,7 +4,6 @@
 #include <ctype.h>
 
 void insertionSort(char *words[], int length);
-void printData(int mode, int length, char *originalWords[], char *sortedWords[]);
 int binarySearch(char* words[], int length, char* word);
 
 int main(int argc, char** argv) 
